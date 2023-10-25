@@ -4,9 +4,7 @@ import * as hjson from 'hjson';
 
 const packageJson = require('./package.json');
 
-let compose: any;
 let inputFile = '';
-let options;
 let outputFile = '';
 let verbose = false;
 let writeToFile = false;
@@ -17,27 +15,29 @@ let writeToFile = false;
 export async function run(): Promise<void> {
 	try {
 		const command: string = core.getInput('command', { required: true });
-		const inputFile: string = core.getInput('inputFile', { required: true });
-		const outputFile: string = core.getInput('outputFile');
-		const verbose: string = core.getInput('verbose');
+		inputFile = core.getInput('inputFile', { required: true });
+		outputFile = core.getInput('outputFile');
+		verbose = core.getBooleanInput('verbose');
 
 		const service: string = core.getInput('service', { required: true });
 		const attribute: string = core.getInput('attribute');
 		const value: string = core.getInput('value');
 
-		const writeToFile: boolean = !!outputFile;
-		
-		let options = {
+		writeToFile = !!outputFile;
+
+		const options = {
 			verbose: verbose,
 			inputFile: inputFile,
 			outputFile: outputFile,
 			writeToFile: writeToFile,
-		}
+		};
 
 		// Set outputs for other workflow steps to use
-		core.setOutput('time', new Date().toTimeString())
+		//core.setOutput('time', new Date().toTimeString());
 
-		core.info(`${packageJson.name} ${packageJson.version} by ${packageJson.author}`)
+		core.info(
+			`${packageJson.name} ${packageJson.version} by ${packageJson.author}`
+		);
 
 		if (verbose) {
 			core.info(`Verbose output is enabled`);
@@ -50,7 +50,7 @@ export async function run(): Promise<void> {
 			}
 		}
 
-		switch(command){
+		switch (command) {
 			case 'print':
 				await before(options);
 				print(service, attribute);
@@ -58,7 +58,8 @@ export async function run(): Promise<void> {
 
 			case 'add':
 				await before(options);
-				if (verbose) core.info(`ADD '${service}.${attribute}' = '${value}'`);
+				if (verbose)
+					core.info(`ADD '${service}.${attribute}' = '${value}'`);
 
 				try {
 					add(service, attribute, hjson.parse(value));
@@ -70,7 +71,8 @@ export async function run(): Promise<void> {
 
 			case 'set':
 				await before(options);
-				if (verbose) core.info(`SET '${service}.${attribute}' to '${value}'`);
+				if (verbose)
+					core.info(`SET '${service}.${attribute}' to '${value}'`);
 
 				try {
 					set(service, attribute, hjson.parse(value));
@@ -89,8 +91,7 @@ export async function run(): Promise<void> {
 			default:
 				throw new Error(`Invalid command '${command}'`);
 		}
-		
 	} catch (error) {
-		if (error instanceof Error) core.setFailed(error.message)
+		if (error instanceof Error) core.setFailed(error.message);
 	}
 }

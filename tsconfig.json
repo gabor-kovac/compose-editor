@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "strict": false,
     "skipLibCheck": true,
-    "newLine": "lf"
+    "newLine": "crlf"
   },
   "exclude": ["./dist", "./node_modules", "./__tests__", "./coverage"]
 }
