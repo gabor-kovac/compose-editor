@@ -1,18 +1,38 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'compose-editor'
+description: 'Edit docker-compose files'
+author: 'gabor-kovac'
 
-# Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  command:
+    description: 'Command to perform (print, set, add, delete)'
     required: true
-    default: '1000'
+    default: 'print'
+  inputFile:
+    description: 'Input docker-compose.yml file'
+    required: true
+    default: 'docker-compose.yml'
+  outputFile:
+    description: 'Output edited compose to this file, if not provided will output to stdout'
+    required: false
+  verbose:
+    description: 'Print verbose output'
+    required: false
+    default: false
+  service:
+    description: 'Docker compose service (ex. mqtt)'
+    required: true
+  attribute:
+    description: 'Service's attribute (ex. restart)'
+    required: false
+  value:
+    description: 'Value of the attribute (ex. always), hjson format'
+    required: false
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  yml:
+    description: 'Output compose in yml format'
+  print:
+    description: 'Output of print command'
 
 runs:
   using: node20
