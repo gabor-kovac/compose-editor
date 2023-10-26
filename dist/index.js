@@ -8417,12 +8417,13 @@ exports.after = after;
 async function load(inputFile) {
     if (verbose)
         core.info(`Loading file '${inputFile}'...`);
-    return fs_1.promises.readFile(inputFile, { encoding: "utf-8" })
-        .then((result) => {
-        compose = yaml.load(result);
-    }).catch((error) => {
+    try {
+        const rawYml = await fs_1.promises.readFile(inputFile, { encoding: 'utf-8' });
+        compose = yaml.load(rawYml);
+    }
+    catch (error) {
         throw new Error(`Error parsing compose file '${inputFile}', ${error}`);
-    });
+    }
 }
 exports.load = load;
 async function write(outputFile) {
@@ -8431,13 +8432,14 @@ async function write(outputFile) {
     }
     if (verbose)
         core.info(`Saving file to '${outputFile}'`);
-    return fs_1.promises.writeFile(outputFile, yaml.dump(compose))
-        .then(() => {
+    try {
+        await fs_1.promises.writeFile(outputFile, yaml.dump(compose));
         if (writeToFile)
             core.info(`File saved successfully.`);
-    }).catch((error) => {
+    }
+    catch (error) {
         throw new Error(`Error saving compose file '${outputFile}', ${error}`);
-    });
+    }
 }
 exports.write = write;
 function print(service = null, attribute = null) {
@@ -8538,10 +8540,8 @@ exports.run = void 0;
 const edit_1 = __nccwpck_require__(5988);
 const core = __importStar(__nccwpck_require__(2186));
 const hjson = __importStar(__nccwpck_require__(24));
-const packageJson = __nccwpck_require__(7358);
-let compose;
+const packageJson = __nccwpck_require__(8651);
 let inputFile = '';
-let options;
 let outputFile = '';
 let verbose = false;
 let writeToFile = false;
@@ -8551,21 +8551,21 @@ let writeToFile = false;
 async function run() {
     try {
         const command = core.getInput('command', { required: true });
-        const inputFile = core.getInput('inputFile', { required: true });
-        const outputFile = core.getInput('outputFile');
-        const verbose = core.getInput('verbose');
+        inputFile = core.getInput('inputFile', { required: true });
+        outputFile = core.getInput('outputFile');
+        verbose = core.getBooleanInput('verbose');
         const service = core.getInput('service', { required: true });
         const attribute = core.getInput('attribute');
         const value = core.getInput('value');
-        const writeToFile = !!outputFile;
-        let options = {
+        writeToFile = !!outputFile;
+        const options = {
             verbose: verbose,
             inputFile: inputFile,
             outputFile: outputFile,
             writeToFile: writeToFile,
         };
         // Set outputs for other workflow steps to use
-        core.setOutput('time', new Date().toTimeString());
+        //core.setOutput('time', new Date().toTimeString());
         core.info(`${packageJson.name} ${packageJson.version} by ${packageJson.author}`);
         if (verbose) {
             core.info(`Verbose output is enabled`);
@@ -8624,14 +8624,6 @@ async function run() {
     }
 }
 exports.run = run;
-
-
-/***/ }),
-
-/***/ 7358:
-/***/ ((module) => {
-
-module.exports = eval("require")("./package.json");
 
 
 /***/ }),
@@ -8721,6 +8713,14 @@ module.exports = require("tls");
 
 "use strict";
 module.exports = require("util");
+
+/***/ }),
+
+/***/ 8651:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"name":"compose-editor","description":"Edit docker-compose files","version":"1.0.0","author":"gabor-kovac","private":true,"homepage":"https://github.com/actions/typescript-action","repository":{"type":"git","url":"git+https://github.com/actions/typescript-action.git"},"bugs":{"url":"https://github.com/actions/typescript-action/issues"},"keywords":["actions","node","setup"],"exports":{".":"./dist/index.js"},"engines":{"node":">=20"},"scripts":{"bundle":"npm run format:write && npm run package","ci-test":"jest","format:write":"prettier --write **/*.ts","format:check":"prettier --check **/*.ts","lint":"npx eslint . -c ./.github/linters/.eslintrc.yml","package":"cp package.json src/ && ncc build src/index.ts --license licenses.txt","package:watch":"npm run package -- --watch","test":"(jest && make-coverage-badge --output-path ./badges/coverage.svg) || make-coverage-badge --output-path ./badges/coverage.svg","all":"npm run format:write && npm run lint && npm run test && npm run package"},"license":"MIT","jest":{"preset":"ts-jest","verbose":true,"clearMocks":true,"testEnvironment":"node","moduleFileExtensions":["js","ts"],"testMatch":["**/*.test.ts"],"testPathIgnorePatterns":["/node_modules/","/dist/"],"transform":{"^.+\\\\.ts$":"ts-jest"},"coverageReporters":["json-summary","text","lcov"],"collectCoverage":true,"collectCoverageFrom":["./src/**"]},"dependencies":{"@actions/core":"^1.10.1","hjson":"^3.2.2","js-yaml":"^4.1.0"},"devDependencies":{"@types/hjson":"^2.4.5","@types/jest":"^29.5.6","@types/js-yaml":"^4.0.8","@types/node":"^20.8.8","@typescript-eslint/eslint-plugin":"^6.9.0","@typescript-eslint/parser":"^6.9.0","@vercel/ncc":"^0.38.1","eslint":"^8.52.0","eslint-plugin-github":"^4.10.1","eslint-plugin-jest":"^27.4.3","eslint-plugin-jsonc":"^2.10.0","eslint-plugin-prettier":"^5.0.1","jest":"^29.7.0","make-coverage-badge":"^1.2.0","prettier":"^3.0.3","prettier-eslint":"^16.1.1","ts-jest":"^29.1.1","typescript":"^5.2.2"}}');
 
 /***/ })
 

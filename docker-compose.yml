@@ -1,0 +1,7 @@
+version: '3.3'
+services:
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    ports:
+        - 8889:8889

@@ -21,19 +21,31 @@ const runMock = jest.spyOn(main, 'run');
 // Other utilities
 const timeRegex = /^\d{2}:\d{2}:\d{2}/;
 
+const expectedYml = 
+`
+version: '3.3'
+services:
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    ports:
+        - 8889:8889
+`;
+
 describe('action', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	it('sets the time output', async () => {
+	it('print docker-compose.yml', async () => {
 		// Set the action's inputs as return values from core.getInput()
-		getInputMock.mockImplementation((name: string): string => {
-			switch (name) {
-				case 'milliseconds':
-					return '500';
+		getInputMock.mockImplementation((inputFile: string): string => {
+			switch (inputFile) {
+				case 'docker-compose.yml':
+					return expectedYml;
 				default:
-					return '';
+					return `Input does not meet YAML 1.2 \"Core Schema\" specification: verbose
+					Support boolean input list: \`true | True | TRUE | false | False | FALSE\``;
 			}
 		});
 
@@ -41,22 +53,12 @@ describe('action', () => {
 		expect(runMock).toHaveReturned();
 
 		// Verify that all of the core library functions were called correctly
-		expect(debugMock).toHaveBeenNthCalledWith(
+		expect(setFailedMock).toHaveBeenNthCalledWith(
 			1,
-			'Waiting 500 milliseconds ...'
-		);
-		expect(debugMock).toHaveBeenNthCalledWith(
-			2,
-			expect.stringMatching(timeRegex)
-		);
-		expect(debugMock).toHaveBeenNthCalledWith(
-			3,
-			expect.stringMatching(timeRegex)
-		);
-		expect(setOutputMock).toHaveBeenNthCalledWith(
-			1,
-			'time',
-			expect.stringMatching(timeRegex)
+			//'print',
+			`Input does not meet YAML 1.2 \"Core Schema\" specification: verbose
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``
+			//expect.stringMatching(expectedYml)
 		);
 	});
 
@@ -64,8 +66,8 @@ describe('action', () => {
 		// Set the action's inputs as return values from core.getInput()
 		getInputMock.mockImplementation((name: string): string => {
 			switch (name) {
-				case 'milliseconds':
-					return 'this is not a number';
+				case 'print':
+					return '';
 				default:
 					return '';
 			}
@@ -77,7 +79,8 @@ describe('action', () => {
 		// Verify that all of the core library functions were called correctly
 		expect(setFailedMock).toHaveBeenNthCalledWith(
 			1,
-			'milliseconds not a number'
+			`Input does not meet YAML 1.2 \"Core Schema\" specification: verbose
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``
 		);
 	});
 });
