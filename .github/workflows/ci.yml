@@ -54,8 +54,10 @@ jobs:
         uses: ./
         with:
           inputFile: 'docker-compose.yml'
-          command: 'print'
+          command: 'set'
           service: 'mqtt'
+          attribute: 'links'
+          value: '[\"service1\",\"service2\"]'
           verbose: true
 
       - name: Print Output
