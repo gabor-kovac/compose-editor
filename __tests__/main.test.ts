@@ -21,8 +21,7 @@ const runMock = jest.spyOn(main, 'run');
 // Other utilities
 const timeRegex = /^\d{2}:\d{2}:\d{2}/;
 
-const expectedYml = 
-`
+const expectedYml = `
 version: '3.3'
 services:
   mqtt:

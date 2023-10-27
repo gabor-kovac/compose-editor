@@ -6,9 +6,9 @@ import { load } from '../src/edit';
 import { expect } from '@jest/globals';
 
 describe('edit.ts', () => {
-    it('throws an invalid file', async () => {
-        const input = 'idontexist.yml';
+	it('throws an invalid file', async () => {
+		const input = 'idontexist.yml';
 
-        await expect(load(input)).rejects.toThrow('Error parsing compose file');
-    });
+		await expect(load(input)).rejects.toThrow('Error parsing compose file');
+	});
 });
