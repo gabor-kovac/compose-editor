@@ -8577,6 +8577,8 @@ async function run() {
             else {
                 core.info(`Writing to stdout...`);
             }
+            core.info(`Options object:`);
+            core.info(`${JSON.stringify(options)}`);
         }
         switch (command) {
             case 'print':

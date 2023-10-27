@@ -48,6 +48,8 @@ export async function run(): Promise<void> {
 			} else {
 				core.info(`Writing to stdout...`);
 			}
+			core.info(`Options object:`);
+			core.info(`${JSON.stringify(options)}`);
 		}
 
 		switch (command) {
