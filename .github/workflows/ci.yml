@@ -57,7 +57,7 @@ jobs:
           command: 'set'
           service: 'mqtt'
           attribute: 'links'
-          value: '::escapeData::[\"service1\",\"service2\"]'
+          value: "[\"service1\",\"service2\"]"
           verbose: true
 
       - name: Print Output
