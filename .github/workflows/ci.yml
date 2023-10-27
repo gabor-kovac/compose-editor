@@ -56,6 +56,7 @@ jobs:
           inputFile: 'docker-compose.yml'
           command: 'print'
           service: 'mqtt'
+          verbose: true
 
       - name: Print Output
         id: output
