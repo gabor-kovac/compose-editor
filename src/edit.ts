@@ -10,9 +10,9 @@ let writeToFile = false;
 
 export async function before(options) {
 	verbose = options.verbose;
-	inputFile = options.file;
-	outputFile = options.output;
-	writeToFile = !!options.output;
+	inputFile = options.inputFile;
+	outputFile = options.outputFile;
+	writeToFile = !!options.outputFile;
 	await load(inputFile);
 }
 
