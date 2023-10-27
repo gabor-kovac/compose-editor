@@ -8411,7 +8411,7 @@ async function after() {
     if (writeToFile)
         await write(outputFile);
     else
-        core.setOutput('yml', JSON.stringify(compose));
+        core.setOutput('yml', yaml.dump(compose));
 }
 exports.after = after;
 async function load(inputFile) {

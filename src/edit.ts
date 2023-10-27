@@ -18,7 +18,7 @@ export async function before(options) {
 
 export async function after() {
 	if (writeToFile) await write(outputFile);
-	else core.setOutput('yml', JSON.stringify(compose));
+	else core.setOutput('yml', yaml.dump(compose));
 }
 
 export async function load(inputFile: string) {
