@@ -8584,6 +8584,7 @@ async function run() {
             case 'print':
                 await (0, edit_1.before)(options);
                 (0, edit_1.print)(service, attribute);
+                await (0, edit_1.after)();
                 break;
             case 'add':
                 await (0, edit_1.before)(options);

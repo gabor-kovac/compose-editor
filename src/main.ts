@@ -56,6 +56,7 @@ export async function run(): Promise<void> {
 			case 'print':
 				await before(options);
 				print(service, attribute);
+				await after();
 				break;
 
 			case 'add':
