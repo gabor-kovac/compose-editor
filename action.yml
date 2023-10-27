@@ -20,7 +20,7 @@ inputs:
     default: false
   service:
     description: 'Docker compose service (ex. mqtt)'
-    required: true
+    required: false
   attribute:
     description: 'Service attribute (ex. restart)'
     required: false
