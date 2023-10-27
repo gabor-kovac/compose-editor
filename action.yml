@@ -21,15 +21,12 @@ inputs:
   service:
     description: 'Docker compose service (ex. mqtt)'
     required: true
-    default: null
   attribute:
-    description: 'Service's attribute (ex. restart)'
+    description: 'Service attribute (ex. restart)'
     required: false
-    default: null
   value:
     description: 'Value of the attribute (ex. always), hjson format'
     required: false
-    default: null
 
 outputs:
   yml:
