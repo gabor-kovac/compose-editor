@@ -61,3 +61,7 @@ jobs:
       - name: Print Output
         id: output
         run: echo "${{ steps.test-action.outputs.print }}"
+
+      - name: Print yml Output
+        id: yml
+        run: echo "${{ steps.test-action.outputs.yml }}"
